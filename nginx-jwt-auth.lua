@@ -9,7 +9,7 @@ local key
 -- -----------------------------------------------------------------------------
 -- unauthorized
 -- -----------------------------------------------------------------------------
-function unauthorized()
+local function unauthorized()
   ngx.exit(ngx.HTTP_UNAUTHORIZED)
 end
 
@@ -31,7 +31,7 @@ local signDataHS = {
 -- -----------------------------------------------------------------------------
 -- verifySignRS
 -- -----------------------------------------------------------------------------
-function verifySignRS(data, sign, key, algo)
+local function verifySignRS(data, sign, key, algo)
   local pubkey = pkey.new(key)
   if not pubkey then return false end
 
@@ -70,7 +70,7 @@ local algoVerify = {
 --
 -- token is a string with header, payload and signature combined with dots
 -- -----------------------------------------------------------------------------
-function splitToken(token)
+local function splitToken(token)
   local segments = {}
   for seg in string.gmatch(token, "[^.]+") do
     table.insert(segments, seg)
@@ -82,7 +82,7 @@ end
 -- -----------------------------------------------------------------------------
 -- parseToken
 -- -----------------------------------------------------------------------------
-function parseToken(token)
+local function parseToken(token)
   local segments = splitToken(token)
   if #segments ~= 3 then return nil, nil, nil, nil end
 
@@ -107,7 +107,7 @@ end
 -- -----------------------------------------------------------------------------
 -- verify
 -- -----------------------------------------------------------------------------
-function verify(token, algo, key)
+local function verify(token, algo, key)
   local header, payload, sign, data = parseToken(token)
   if not header then return false end
 
